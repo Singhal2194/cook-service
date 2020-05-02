@@ -30,7 +30,7 @@ public class AuthenticationController {
 
         Map<String, Object> response = loginService.login(loginPayload);
         if (STATUS_FAILURE.equals(response.get(Constants.STATUS).toString())) {
-            return Response.status(400).entity(response).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
         }
 
         return Response.ok().entity(response).build();
