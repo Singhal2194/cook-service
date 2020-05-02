@@ -29,11 +29,10 @@ public class AuthenticationController {
         logger.info("Login Request with request object:{}", loginPayload);
 
         Map<String, Object> response = loginService.login(loginPayload);
-
         if (STATUS_FAILURE.equals(response.get(Constants.STATUS).toString())) {
             return Response.status(400).entity(response).build();
         }
 
-        return Response.ok().build();
+        return Response.ok().entity(response).build();
     }
 }
