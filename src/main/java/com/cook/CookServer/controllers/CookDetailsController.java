@@ -9,17 +9,11 @@ import com.cook.CookServer.service.CookDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.QueryAnnotation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 @RestController
@@ -32,7 +26,8 @@ public class CookDetailsController {
     private CookDetailsService cookDetailsService;
 
     @GetMapping(path = "/profile", produces = "application/json")
-    public Response getProfile(@NotBlank @RequestParam("cook_id") String id) {
+    @ResponseBody
+    public ResponseEntity<Object> getProfile(@NotBlank @RequestParam("cook_id") String id) {
 
         logger.info("get Request with request object:{}", id);
 
@@ -41,9 +36,10 @@ public class CookDetailsController {
             ErrorMessagePayload errorMessagePayload = new ErrorMessagePayload();
             errorMessagePayload.setError(Constants.COOKID_NOT_FOUND);
             errorMessagePayload.setReason("no records associated with the given cook id");
-            return Response.status(Response.Status.BAD_REQUEST).entity(errorMessagePayload).build();
+           // return Response.status(Response.Status.BAD_REQUEST).entity(errorMessagePayload).build().getEntity();
+        return new ResponseEntity(errorMessagePayload, HttpStatus.BAD_REQUEST);
         }
         CookDetails cookDetails = cookDetailsService.getCookDetails(cookEntity);
-        return Response.ok(cookDetails).build();
+        return new ResponseEntity(cookDetails, HttpStatus.OK);
     }
 }

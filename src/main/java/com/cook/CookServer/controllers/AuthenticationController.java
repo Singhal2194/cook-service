@@ -6,6 +6,8 @@ import com.cook.CookServer.service.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,15 +26,15 @@ public class AuthenticationController {
     private LoginService loginService;
 
     @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
-    public Response login(@Valid @RequestBody LoginPayload loginPayload) {
+    public ResponseEntity<Object> login(@Valid @RequestBody LoginPayload loginPayload) {
 
         logger.info("Login Request with request object:{}", loginPayload);
 
         Map<String, Object> response = loginService.login(loginPayload);
         if (STATUS_FAILURE.equals(response.get(Constants.STATUS).toString())) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
+            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
         }
 
-        return Response.ok().entity(response).build();
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 }
