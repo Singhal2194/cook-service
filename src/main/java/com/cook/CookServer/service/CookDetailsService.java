@@ -1,28 +1,26 @@
 package com.cook.CookServer.service;
+
 import com.cook.CookServer.dto.CookDetails;
-import com.cook.CookServer.model.CookEntity;
-import com.cook.CookServer.repository.CookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cook.CookServer.model.CookDetailsEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class CookDetailsService {
 
 
-    @Autowired
-    CookRepository cookRepository;
+    public CookDetails getCookDetails(List<CookDetailsEntity> cookEntities) {
 
-
-    public CookDetails getCookDetails(CookEntity cookEntity) {
-
+        CookDetailsEntity cookDetailsEntity = cookEntities.get(0);
         CookDetails cookDetails = new CookDetails();
-        cookDetails.setFirstName(cookEntity.getFirstName());
-        cookDetails.setLastName(cookEntity.getLastName());
-        cookDetails.setCity(cookEntity.getCity());
-        cookDetails.setEmailId(cookEntity.getEmailId());
-        cookDetails.setAadharNumber(cookEntity.getAadharNumber());
-        cookDetails.setPhoneNumber(cookEntity.getPhoneNumber());
-        cookDetails.setRatings(cookEntity.getRatings());
+        cookDetails.setFirstName(cookDetailsEntity.getFirstName());
+        cookDetails.setLastName(cookDetailsEntity.getLastName());
+        cookDetails.setCity(cookDetailsEntity.getCity());
+        cookDetails.setEmailId(cookDetailsEntity.getEmailId());
+        cookDetails.setAadharNumber(cookDetailsEntity.getAadharNumber());
+        cookDetails.setPhoneNumber(cookDetailsEntity.getPhoneNumber());
+        cookDetails.setRatings(cookDetailsEntity.getRatings());
         return cookDetails;
     }
 }
